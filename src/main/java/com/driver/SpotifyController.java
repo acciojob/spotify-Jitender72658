@@ -10,6 +10,9 @@ public class SpotifyController {
 
     //Autowire will not work in this case, no need to change this and add autowire
     SpotifyService spotifyService = new SpotifyService();
+    public SpotifyController(){
+
+    }
 
     @PostMapping("/add-user")
     public String createUser(@RequestParam(name = "name") String name, String mobile){
