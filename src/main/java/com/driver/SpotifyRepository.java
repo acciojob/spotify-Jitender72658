@@ -6,21 +6,21 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class SpotifyRepository {
-    public HashMap<Artist, List<Album>> artistAlbumMap;
-    public HashMap<Album, List<Song>> albumSongMap;
-    public HashMap<Playlist, List<Song>> playlistSongMap;
-    public HashMap<Playlist, List<User>> playlistListenerMap;
-    public HashMap<User, Playlist> creatorPlaylistMap;
-    public HashMap<User, List<Playlist>> userPlaylistMap;
-    public HashMap<Song, List<User>> songLikeMap;
+    public static HashMap<Artist, List<Album>> artistAlbumMap;
+    public static HashMap<Album, List<Song>> albumSongMap;
+    public  static HashMap<Playlist, List<Song>> playlistSongMap;
+    public static HashMap<Playlist, List<User>> playlistListenerMap;
+    public static HashMap<User, Playlist> creatorPlaylistMap;
+    public static HashMap<User, List<Playlist>> userPlaylistMap;
+    public static HashMap<Song, List<User>> songLikeMap;
 
-    public List<User> users;
-    public List<Song> songs;
-    public List<Playlist> playlists;
-    public List<Album> albums;
-    public List<Artist> artists;
+    public static List<User> users;
+    public static List<Song> songs;
+    public static List<Playlist> playlists;
+    public static List<Album> albums;
+    public static List<Artist> artists;
 
-    public HashMap<User,List<Song>> userLikedSongsMap;
+    public static HashMap<User,List<Song>> userLikedSongsMap;
 
     public SpotifyRepository(){
         //To avoid hitting apis multiple times, initialize all the hashmaps here with some dummy data
