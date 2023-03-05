@@ -56,20 +56,24 @@ public class SpotifyRepository {
     public Album createAlbum(String title, String artistName) {
         // checking that the artist is already present or not
         Artist currentArtist = new Artist(artistName);
+       boolean isArtistPresent = false;
         for(int i =0;i<artists.size();i++){
             Artist artist = artists.get(i);
             if(artist.getName().equals(artistName)){
                 currentArtist = artist;
+                isArtistPresent = true;
                 break;
             }
         }
-        artists.add(currentArtist);
+        if(!isArtistPresent){
+            artists.add(currentArtist);
+        }
 
         // adding new album in aristAlbumMap
         Album newAlbum = new Album(title);
         List<Album> albumList = new ArrayList<>();
-        if(artistAlbumMap.get(artistName)!=null){
-            albumList = artistAlbumMap.get(artistName);
+        if(artistAlbumMap.containsKey(currentArtist)){
+            albumList = artistAlbumMap.get(currentArtist);
         }
         albumList.add(newAlbum);
         artistAlbumMap.put(currentArtist,albumList);
@@ -217,6 +221,16 @@ public class SpotifyRepository {
         List<User> listeners = new ArrayList<>();
         if(playlistListenerMap.containsKey(newPlayList)) {
             listeners =  playlistListenerMap.get(newPlayList);
+        }
+       boolean isUserAlreadyPresent = false;
+        for(User user: listeners){
+            if(user.getMobile().equals(newuser.getMobile())){
+                isUserAlreadyPresent = true;
+                break;
+            }
+        }
+        if(isUserAlreadyPresent){
+            return newPlayList;
         }
         listeners.add(newuser);
         playlistListenerMap.put(newPlayList,listeners);
