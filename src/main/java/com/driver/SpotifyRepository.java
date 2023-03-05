@@ -295,9 +295,9 @@ public class SpotifyRepository {
     }
 
     public String mostPopularSong() {
-        String mostPopularSongTitle = songs.get(0).getTitle();
+        String mostPopularSongTitle = "";
         int mostLikes = 0;
-        for(int i = 1;i<songs.size();i++){
+        for(int i = 0;i<songs.size();i++){
             Song currentSong = songs.get(i);
             if(currentSong.getLikes()>mostLikes){
                 mostPopularSongTitle = currentSong.getTitle();
