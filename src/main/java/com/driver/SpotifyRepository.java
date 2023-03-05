@@ -21,6 +21,7 @@ public class SpotifyRepository {
     public List<Artist> artists;
 
     public HashMap<User,List<Song>> userLikedSongsMap;
+    public HashMap<Artist,List<Song>> artistLikedSongsMap;
 
     public SpotifyRepository(){
         //To avoid hitting apis multiple times, initialize all the hashmaps here with some dummy data
@@ -213,7 +214,10 @@ public class SpotifyRepository {
             throw new Exception("Playlist does not exist");
         }
 
-        List<User> listeners = playlistListenerMap.get(newPlayList);
+        List<User> listeners = new ArrayList<>();
+        if(playlistListenerMap.containsKey(newPlayList)) {
+            listeners =  playlistListenerMap.get(newPlayList);
+        }
         listeners.add(newuser);
         playlistListenerMap.put(newPlayList,listeners);
         return newPlayList;
@@ -254,33 +258,45 @@ public class SpotifyRepository {
         if(userLikedSongsMap.containsKey(newuser)){
             userLikedSongs = userLikedSongsMap.get(newuser);
         }
+
         boolean isListContainSong = false;
         for(Song song: userLikedSongs){
-            if(newSong.equals(song)){
+            if(newSong.getTitle().equals(song.getTitle())){
                 isListContainSong = true;
                 break;
             }
         }
+
         if(!isListContainSong){
             newSong.setLikes(newSong.getLikes()+1);
             userLikedSongs.add(newSong);
             userLikedSongsMap.put(newuser,userLikedSongs);
         }
         Album albumHavingCurrSong = new Album();
+        boolean isSongPresentInAlbum = false;
         for(Album album: albumSongMap.keySet()){
-            List<Song> songList = albumSongMap.get(album);
-            if(songList.contains(newSong)){
-                albumHavingCurrSong = album;
-                break;
-            }
+           if(albumSongMap.get(album)!=null) {
+               List<Song> songList = albumSongMap.get(album);
+               if (songList.contains(newSong)) {
+                   albumHavingCurrSong = album;
+                   isSongPresentInAlbum = true;
+                   break;
+               }
+           }
         }
+        if(!isSongPresentInAlbum){
+            return newSong;
+        }
+
 
         Artist artistOfCurrSong = new Artist();
         for(Artist artist: artistAlbumMap.keySet()){
-            List<Album> albumList = artistAlbumMap.get(artist);
-            if(albumList.contains(albumHavingCurrSong)){
-                artist.setLikes(artist.getLikes()+1);
-                break;
+            if(artistAlbumMap.get(artist)!=null) {
+                List<Album> albumList = artistAlbumMap.get(artist);
+                if (albumList.contains(albumHavingCurrSong)) {
+                    artist.setLikes(artist.getLikes() + 1);
+                    break;
+                }
             }
         }
         return newSong;
